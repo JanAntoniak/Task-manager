@@ -5,5 +5,5 @@ package models
   */
 object State extends Enumeration {
     type State = Value
-    val DONE, ADDED, CANCELLED = Value
+    var DONE, ADDED, CANCELLED = Value
 }

@@ -11,3 +11,12 @@ GET     /products                   controllers.Tasks.list
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
+GET     /getTasks                   controllers.Tasks.getTasks
+
+GET     /getDoneTasks               controllers.Tasks.getDoneTasks
+
+GET     /getAddedTasks              controllers.Tasks.getAddedTasks
+
+GET     /getIndefinite              controllers.Tasks.getIndefiniteTimeTasks
+
+GET     /getDeadline                controllers.Tasks.getDeadlineTasks
