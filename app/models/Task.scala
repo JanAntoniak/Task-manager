@@ -4,6 +4,7 @@ import models.State._
 import org.joda.time.DateTime
 
 
+
 /**
   *  name - name of the task
   *  description - a short description of what to do
@@ -15,7 +16,7 @@ abstract class Task {
 
   def name: String
   def description: String
-  def time: Integer
+  def time: Int
   def state: State
 
   override def toString: String = "Task: name = " + name + ", description = " + description +
@@ -23,6 +24,86 @@ abstract class Task {
 }
 
 object Task {
+
+  def unapply(task: Task) = if(task == null) None else Some(task.name, task.description, task.time, task.state)
+
+  def findDeadlineTasks: List[Task] = {
+    val all = findAll
+    val result = all flatMap {
+      case task : DeadlineTask => Some(task)
+      case _ => None
+    }
+    result
+  }
+
+  def findIndefiniteTimeTasks: List[Task] = {
+    val all = findAll
+    val result = all flatMap {
+      case task : IndefiniteTimeTask => Some(task)
+      case _ => None
+    }
+    result
+  }
+
+  def findAddedTasks: List[Task] = findAll.filter(_.state == ADDED)
+
+  def findDoneTasks: List[Task] = findAll.filter(_.state == DONE)
+
+  def findByName(name: String): Option[Task with Product with Serializable] = tasks.find(_.name == name)
+
+  def findAll: List[Task] = tasks.toList.sortBy(_.name)
+
+  def addNewTask(): Unit = {
+
+  }
+
+  def setDone(name: String): Boolean = {
+    val taskFound = findByName(name)
+    if (taskFound.nonEmpty && taskFound.get.state == ADDED) {
+      val task = taskFound.get
+      val newTask = task match {
+        case _ : DeadlineTask => task.asInstanceOf[DeadlineTask].copy(state = DONE)
+        case _ : IndefiniteTimeTask => task.asInstanceOf[IndefiniteTimeTask].copy(state = DONE)
+        case _ : PeriodicTask => task.asInstanceOf[PeriodicTask].copy(state = DONE)
+      }
+      tasks += newTask
+      tasks -= task
+      true
+    }
+    else false
+  }
+
+  def setCancelled(name: String): Boolean = {
+      val taskFound = findByName(name)
+      if (taskFound.nonEmpty && taskFound.get.state == ADDED) {
+        val task = taskFound.get
+        val newTask = task match {
+          case _: DeadlineTask => task.asInstanceOf[DeadlineTask].copy(state = CANCELLED)
+          case _: IndefiniteTimeTask => task.asInstanceOf[IndefiniteTimeTask].copy(state = CANCELLED)
+          case _: PeriodicTask => task.asInstanceOf[PeriodicTask].copy(state = CANCELLED)
+        }
+        tasks += newTask
+        tasks -= task
+        true
+      }
+      else false
+  }
+
+  def setDeadline(): Unit = {
+
+  }
+
+  /**
+    *  changes the time the task is expected to be finished in
+    */
+  def changeTime(): Unit = {
+
+  }
+
+  def generateReport(): Unit = {
+
+  }
+
   var tasks = Set(
     DeadlineTask("task1", "Create a web application about task management", 10, ADDED,
       new DateTime(2017, 3, 17, 0, 0, 0)),
@@ -34,77 +115,4 @@ object Task {
     DeadlineTask("task6", "description of task 6", 5, CANCELLED,
       new DateTime(2017, 1, 11, 0, 0, 0))
   )
-
-  def findDeadlineTasks: List[Task] = {
-    val all = findAll
-    val result = all flatMap {
-      case _ : IndefiniteTimeTask => None
-      case _ : PeriodicTask => None
-      case other => Some(other)
-    }
-    result
-  }
-
-  def findIndefiniteTimeTasks: List[Task] = {
-    val all = findAll
-    val result = all flatMap {
-      case _ : DeadlineTask => None
-      case _ : PeriodicTask => None
-      case other => Some(other)
-    }
-    result
-  }
-
-  def findAddedTasks: List[Task] = findAll.filter(_.state == ADDED)
-
-  /**
-    *
-    * @return List[Task] list of tasks that are already DONE
-    */
-  def findDoneTasks: List[Task] = findAll.filter(_.state == DONE)
-
-  /**
-    * Find a task by its name
-    * @param name name of task
-    * @return Option[Task]
-    */
-
-  def findByName(name: String): Option[Task with Product with Serializable] = tasks.find(_.name == name)
-
-
-  /**
-    * Find all tasks
-    * @return List[Task] all tasks from 'database'
-    */
-  def findAll: List[Task] = tasks.toList.sortBy(_.name)
-
-  /**
-    * Change the status of the task to DONE
-    * @param name name of task
-    */
-  def setDone(name: String): Boolean = {
-    val task = findByName(name)
-    if (task.nonEmpty && task.get.state == ADDED) {
-      //val newTask = task.get.copy(state = DONE)
-      //tasks += newTask
-      //tasks -= task.get
-      true
-    }
-    else false
-  }
-
-  /**
-    * Change the status of the task to CANCELLED
-    * @param name name of task
-    */
-  def setCancelled(name: String): Boolean = {
-    val task = findByName(name)
-    if (task.nonEmpty) {
-      //val newTask = task.get.copy(state = CANCELLED)
-      //tasks += newTask
-      //tasks -= task.get
-      true
-    }
-    else false
-  }
 }

@@ -1,10 +1,13 @@
 package controllers
 
+import models.State.State
 import play.api.mvc.{Action, Controller}
-import models.{DeadlineTask, IndefiniteTimeTask, Task}
-import org.joda.time.{DateTime, ReadableInstant}
+import models._
+import org.joda.time.DateTime
 import play.api.libs.json.Json
 import play.api.libs.json._
+import play.api.libs.functional.syntax._
+
 
 object Tasks extends Controller{
   def list = Action { implicit request =>
@@ -12,82 +15,44 @@ object Tasks extends Controller{
     Ok(views.html.main("Title")(views.html.tasks.list(products)))
   }
 
-  def getDeadlineTasks= Action {implicit request =>
+  private implicit val taskWrites: Writes[Task] = (
+    (JsPath \ "name").write[String] and
+      (JsPath \ "description").write[String] and
+      (JsPath \ "time").write[Int] and
+      (JsPath \ "state").write[State]
+    )(unlift(Task.unapply))
 
-    val instantOrdering = implicitly[Ordering[ReadableInstant]]
+  private implicit val deadlineTaskWrites: Writes[DeadlineTask] = (
+    (JsPath \ "name").write[String] and
+      (JsPath \ "description").write[String] and
+      (JsPath \ "time").write[Int] and
+      (JsPath \ "state").write[State] and
+      (JsPath \ "deadline").write[DateTime]
+    )(unlift(DeadlineTask.unapply))
+
+  def getDeadlineTasks= Action {implicit request =>
     val result = Task.findDeadlineTasks.asInstanceOf[List[DeadlineTask]].sortBy(_.deadline.toString)
-    implicit val taskWrites = new Writes[DeadlineTask] {
-      def writes(task: DeadlineTask): JsValue = {
-        Json.obj(
-          "name" -> task.name,
-          "description" -> task.description,
-          "time" -> task.time.toString,
-          "state" -> task.state,
-          "deadline" -> task.deadline.toString()
-        )
-      }
-    }
     Ok(Json.toJson(result))
   }
 
   def getIndefiniteTimeTasks = Action {implicit request =>
     val result = Task.findIndefiniteTimeTasks
-    implicit val taskWrites = new Writes[Task] {
-      def writes(task: Task): JsValue = {
-        Json.obj(
-          "name" -> task.name,
-          "description" -> task.description,
-          "time" -> task.time.toString,
-          "state" -> task.state
-        )
-      }
-    }
     Ok(Json.toJson(result))
   }
 
   def getAddedTasks = Action {implicit request =>
     val result = Task.findAddedTasks
-    implicit val taskWrites = new Writes[Task] {
-      def writes(task: Task): JsValue = {
-        Json.obj(
-          "name" -> task.name,
-          "description" -> task.description,
-          "time" -> task.time.toString,
-          "state" -> task.state
-        )
-      }
-    }
     Ok(Json.toJson(result))
   }
 
   def getDoneTasks = Action {implicit request =>
     val result = Task.findDoneTasks
-    implicit val implicitFooWrites = new Writes[Task] {
-      def writes(task: Task): JsValue = {
-        Json.obj(
-          "name" -> task.name,
-          "description" -> task.description,
-          "time" -> task.time.toString,
-          "state" -> task.state
-        )
-      }
-    }
     Ok(Json.toJson(result))
   }
 
 
   def getTasks = Action { implicit request =>
     val result = Task.findAll
-    implicit val implicitFooWrites = new Writes[Task] {
-      def writes(task: Task): JsValue = {
-        Json.obj(
-          "name" -> task.name,
-          "description" -> task.description,
-          "time" -> task.time.toString,
-          "state" -> task.state
-        )
-      }
-    }
     Ok(Json.toJson(result))
   }
 
