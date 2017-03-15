@@ -12,7 +12,7 @@ import org.joda.time.DateTime
   *  state - state of a task, can be 'added' to system, already 'done' or cancelled
   */
 
-abstract class Task {
+abstract class Task() extends Product with Serializable {
 
   def name: String
   def description: String
@@ -27,14 +27,13 @@ object Task {
 
   def unapply(task: Task) = if(task == null) None else Some(task.name, task.description, task.time, task.state)
 
-  def findDeadlineTasks: List[Task] = {
-    val all = findAll
-    val result = all flatMap {
-      case task : DeadlineTask => Some(task)
-      case _ => None
-    }
-    result
-  }
+  def findByName(name: String): Option[Task with Product with Serializable] = tasks.find(_.name == name)
+
+  def findAll: List[Task] = tasks.toList.sortBy(_.name)
+
+  def findAddedTasks: List[Task] = findAll.filter(_.state == ADDED)
+
+  def findDoneTasks: List[Task] = findAll.filter(_.state == DONE)
 
   def findIndefiniteTimeTasks: List[Task] = {
     val all = findAll
@@ -45,16 +44,21 @@ object Task {
     result
   }
 
-  def findAddedTasks: List[Task] = findAll.filter(_.state == ADDED)
+  def findDeadlineTasks: List[Task] = {
+    val all = findAll
+    val result = all flatMap {
+      case task : DeadlineTask => Some(task)
+      case _ => None
+    }
+    result
+  }
 
-  def findDoneTasks: List[Task] = findAll.filter(_.state == DONE)
-
-  def findByName(name: String): Option[Task with Product with Serializable] = tasks.find(_.name == name)
-
-  def findAll: List[Task] = tasks.toList.sortBy(_.name)
-
-  def addNewTask(): Unit = {
-
+  def addNewTask(task: Task): Boolean = {
+    if(!tasks.exists(_.name == task.name)) {
+      tasks += task
+      true
+    }
+    else false
   }
 
   def setDone(name: String): Boolean = {
@@ -89,15 +93,38 @@ object Task {
       else false
   }
 
-  def setDeadline(): Unit = {
-
+  def setDeadline(name: String, deadline: DateTime): Boolean = {
+    val taskFound = findByName(name)
+    if (taskFound.nonEmpty && taskFound.get.isInstanceOf[IndefiniteTimeTask]) {
+     val tf = taskFound.get.asInstanceOf[IndefiniteTimeTask]
+     val newTask = DeadlineTask(tf.name, tf.description, tf.time, tf.state, deadline)
+     if(Task.addNewTask(newTask)) {
+       tasks -= taskFound.get
+       true
+     }
+     else false
+    }
+    else false
   }
 
   /**
     *  changes the time the task is expected to be finished in
     */
-  def changeTime(): Unit = {
-
+  def changeTime(name: String, newTime: Int): Boolean = {
+    val taskFound = findByName(name)
+    if (taskFound.nonEmpty) {
+      val newTask = taskFound.get match {
+        case _ : DeadlineTask => taskFound.get.asInstanceOf[DeadlineTask].copy(time = newTime)
+        case _ : PeriodicTask => taskFound.get.asInstanceOf[PeriodicTask].copy(time = newTime)
+        case _ : IndefiniteTimeTask => taskFound.get.asInstanceOf[IndefiniteTimeTask].copy(time = newTime)
+      }
+      if(Task.addNewTask(newTask)) {
+        tasks -= taskFound.get
+        true
+      }
+      else false
+    }
+    else false
   }
 
   def generateReport(): Unit = {

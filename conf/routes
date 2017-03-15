@@ -13,10 +13,24 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /getTasks                   controllers.Tasks.getTasks
 
-GET     /getDoneTasks               controllers.Tasks.getDoneTasks
+GET     /getAddedTasks              controllers.Tasks.getAddedTasks             #a)
 
-GET     /getAddedTasks              controllers.Tasks.getAddedTasks
+GET     /getDoneTasks               controllers.Tasks.getDoneTasks              #b)
 
-GET     /getIndefinite              controllers.Tasks.getIndefiniteTimeTasks
+GET     /getIndefinite              controllers.Tasks.getIndefiniteTimeTasks    #c)
 
-GET     /getDeadline                controllers.Tasks.getDeadlineTasks
+GET     /getDeadline                controllers.Tasks.getDeadlineTasks          #d)
+
+POST    /addDeadlineTask            controllers.Tasks.addDeadlineTask           #e)
+
+POST    /addIndefiniteTask          controllers.Tasks.addIndefiniteTask         #e)
+
+POST    /addPeriodicTask            controllers.Tasks.addPeriodicTask           #e)
+
+POST    /setDone                    controllers.Tasks.setDone                   #f)
+
+POST    /setCancelled               controllers.Tasks.setCancelled              #f)
+
+POST    /setDeadline                controllers.Tasks.setDeadline               #g)
+
+POST    /changeTime                 controllers.Tasks.changeTime                #h)
