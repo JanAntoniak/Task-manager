@@ -500,3 +500,39 @@ function changeTime() {
     xmlhttp.send(data);
     changeTimeForm()
 }
+
+function generateReport() {
+    $("#content").html("");
+    jQuery.ajax({
+        url: "/getTasks",
+        type: "GET",
+
+        contentType: 'application/json; charset=utf-8',
+        success: function (resultData) {
+            var items = [];
+            items.push("<thead><tr><th>Name</th>" +
+                "<th>Time</th></tr></thead>");
+
+            items.push("<tbody>");
+            $.each(resultData, function (key, val) {
+                items.push("<tr>");
+                $.each(val, function (key2, val2) {
+                    if(key2 == "name" || key2 == "time")
+                    items.push("<td " + "'>" + val2 + "</td>");
+                });
+                items.push("<tr>");
+            });
+            items.push("</tbody>");
+
+            $("<table/>", {
+                "class": "table",
+                "id": "addedTasks",
+                html: items.join("")
+            }).appendTo(".data");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+        },
+
+        timeout: 120000
+    });
+}

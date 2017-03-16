@@ -118,10 +118,6 @@ object Task {
     else false
   }
 
-  def generateReport(): Unit = {
-
-  }
-
   var tasks = Set(
     DeadlineTask("task1", "Create a web application about task management", 10, "ADDED",
       new DateTime(2017, 3, 17, 0, 0, 0)),
