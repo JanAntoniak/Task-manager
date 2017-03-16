@@ -297,6 +297,8 @@ function addDead() {
     var dead = document.getElementById("deadL").value;
     dead = parseInt(dead);
     time = parseInt(time);
+    if(dead < 0 || time < 0)
+        addFormDead();
     var data = JSON.stringify({ name: name, description: desc, time: time, state: "ADDED", deadline: dead});
 
     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
@@ -350,6 +352,8 @@ function addPeriod() {
     var period = document.getElementById("period").value;
     period = parseInt(period);
     time = parseInt(time);
+    if(period < 0 || time < 0)
+        addFormPeriod();
     var data = JSON.stringify({ name: name, description: desc, time: time, state: "ADDED", period: period});
 
     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
@@ -364,8 +368,9 @@ function addIndef() {
     var desc = document.getElementById("desc").value;
     var time = document.getElementById("time").value;
     time = parseInt(time);
+    if(time < 0)
+        addFormIndef();
     var data = JSON.stringify({ name: name, description: desc, time: time, state: "ADDED"});
-
     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
     xmlhttp.open("POST", "/addIndefiniteTask");
     xmlhttp.setRequestHeader("Content-Type", "application/json");
@@ -425,7 +430,8 @@ function setDeadline() {
     var deadline = document.getElementById("deadline").value;
     deadline = parseInt(deadline);
     var data = JSON.stringify({ name: name, deadline: deadline});
-
+    if(deadline < 0)
+        setDeadlineForm();
     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
     xmlhttp.open("POST", "/setDeadline");
     xmlhttp.setRequestHeader("Content-Type", "application/json");
@@ -484,6 +490,8 @@ function changeTime() {
     var name = document.getElementById("name").value;
     var time = document.getElementById("time").value;
     time = parseInt(time);
+    if(time < 0)
+        changeTimeForm();
     var data = JSON.stringify({ name: name, time: time});
 
     var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
