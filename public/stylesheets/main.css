@@ -1,0 +1,108 @@
+body {
+    color:black;
+}
+body, p, label {
+    font-size:15px;
+    padding: 70px;
+}
+.label {
+    font-size:13px; line-height:16px;
+}
+.alert-info { border-color:transparent; background-color:#3A87AD;
+    color:white; font-weight:bold; }
+div.screenshot { width: 800px; margin:20px; background-color:#D0E7EF; }
+.navbar-fixed-top .navbar-inner { padding-left:20px; min-height: 100px}
+.navbar .nav > li > a { color:#bbb; }
+.screenshot > .container { width: 760px; padding: 20px; }
+.navbar-fixed-top, .navbar-fixed-bottom { position:relative; }
+h1 { font-size:125%; }
+table { border-collapse: collapse; width:100%; }
+th, td { text-align:left; padding: 0.3em 0;
+    border-bottom: 1px solid white; }
+tr.odd td { }
+form { float:left; margin-right: 1em; }
+legend { border: none; }
+fieldset > div { margin: 12px 0; }
+.help-block { display: inline; vertical-align: middle; }
+.error .help-block { display: none; }
+.error .help-inline { padding-left: 9px; color: #B94A48; }
+footer { clear: both; text-align: right; }
+dl.products { margin-top: 0; }
+dt { clear: right; }
+.barcode { float:right; margin-bottom: 10px; border: 4px solid white; }
+.button {
+    padding:10px;}
+
+.vertical-menu {
+    width: 200px; /* Set a width if you like */
+}
+
+.vertical-menu a {
+    background-color: #eee; /* Grey background color */
+    color: black; /* Black text color */
+    display: block; /* Make the links appear below each other */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.vertical-menu a:hover {
+    background-color: #ccc; /* Dark grey background on mouse-over */
+}
+
+.vertical-menu a.active {
+    background-color: #4CAF50; /* Add a green color to the "active/current" link */
+    color: white;
+}
+
+.likeButton {
+    cursor:pointer;
+    cursor:hand;
+}
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 22px;
+    color: #808bc5;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+

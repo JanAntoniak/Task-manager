@@ -6,31 +6,31 @@
 GET     /                           controllers.Application.index
 
 # Tasks list
-GET     /products                   controllers.Tasks.list
+GET     /tasks                      controllers.Tasks.list
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /getTasks                   controllers.Tasks.getTasks
 
-GET     /getAddedTasks              controllers.Tasks.getAddedTasks             #a)
+GET     /getAddedTasks              controllers.Tasks.getAddedTasks
 
-GET     /getDoneTasks               controllers.Tasks.getDoneTasks              #b)
+GET     /getDoneTasks               controllers.Tasks.getDoneTasks
 
-GET     /getIndefinite              controllers.Tasks.getIndefiniteTimeTasks    #c)
+GET     /getIndefinite              controllers.Tasks.getIndefiniteTimeTasks
 
-GET     /getDeadline                controllers.Tasks.getDeadlineTasks          #d)
+GET     /getDeadline                controllers.Tasks.getDeadlineTasks
 
-POST    /addDeadlineTask            controllers.Tasks.addDeadlineTask           #e)
+POST    /addDeadlineTask            controllers.Tasks.addDeadlineTask
 
-POST    /addIndefiniteTask          controllers.Tasks.addIndefiniteTask         #e)
+POST    /addIndefiniteTask          controllers.Tasks.addIndefiniteTask
 
-POST    /addPeriodicTask            controllers.Tasks.addPeriodicTask           #e)
+POST    /addPeriodicTask            controllers.Tasks.addPeriodicTask
 
-POST    /setDone                    controllers.Tasks.setDone                   #f)
+POST    /setDone                    controllers.Tasks.setDone
 
-POST    /setCancelled               controllers.Tasks.setCancelled              #f)
+POST    /setCancelled               controllers.Tasks.setCancelled
 
-POST    /setDeadline                controllers.Tasks.setDeadline               #g)
+POST    /setDeadline                controllers.Tasks.setDeadline
 
-POST    /changeTime                 controllers.Tasks.changeTime                #h)
+POST    /changeTime                 controllers.Tasks.changeTime

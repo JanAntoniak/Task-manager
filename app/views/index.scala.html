@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tasks</title>
+        <link rel='stylesheet' type='text/css'
+        href='@routes.Assets.at("stylesheets/bootstrap.css")'>
+        <link rel='stylesheet' type='text/css'
+        href="@routes.Assets.at("stylesheets/main.css")">
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"
+        type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/tasks.js")"
+        type="text/javascript"></script>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+        <div class="container" >
+            <div class="navbar navbar-fixed-top navbar-header">
+                <div class="navbar-inner">
+                    <h1>Task manager</h1>
+                    <h9>Hello. This is your personal task manager. Now you can plan your future!</h9>
+                </div>
+            </div>
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a class="likeButton" onclick="showAllTasks()">Show all tasks</a>
+                <a class="likeButton" onclick="showWhatToDo()">Show what to do</a>
+                <a class="likeButton" onclick="showDoneTasks()">Show done tasks</a>
+                <a class="likeButton" onclick="showNoDeadline()">Show tasks with no deadline</a>
+                <a class="likeButton" onclick="showCalendar()">Show calendar</a>
+                <a class="likeButton" onclick="addNewTask()">Add new task</a>
+                <a class="likeButton" onclick="setDeadlineForm()">Set deadline</a>
+                <a class="likeButton" onclick="changeTimeForm()">Edit estimated time</a>
+            </div>
+            <script>showAllTasks()</script>
+            <div id="main">
+                <span style="font-size:30px; cursor:pointer" onclick="openNav()">&#9776; Menu</span>
+            </div>
+
+            <div >
+                <div id="content"  class="data" style="padding: 5px">
+                </div>
+            </div>
+            </div>
+    </body>
+</html>
